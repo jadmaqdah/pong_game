@@ -28,6 +28,7 @@ function update(time) {
             getComputedStyle(document.documentElement).getPropertyValue("--hue")
             )
 
+        // setting the '--hue' value and changing it wrt delta
         document.documentElement.style.setProperty("--hue", hue + delta * 0.01)
 
         if (isLose()) handleLose()
@@ -42,23 +43,29 @@ function update(time) {
     window.requestAnimationFrame(update)
 }
 
+// function that checks if the ball is out of bounds (i.e., lost)
 function isLose() {
     const rect = ball.rect()
     return (rect.right >= window.innerWidth || rect.left <= 0) 
 }
 
 function handleLose() {
+    // handling the score depending on the side the ball has touched
     const rect = ball.rect()
     if (rect.right >= window.innerWidth) {
         playerScoreElem.textContent = parseInt(playerScoreElem.textContent) + 1
     } else {
         computerScoreElem.textContent = parseInt(computerScoreElem.textContent) + 1
     }
+
+    // resetting the ball and computer paddle to centre of screen
     ball.reset()
     computerPaddle.reset()
 }
 
+// the y position of the player paddle moves with the mouse
 document.addEventListener("mousemove", e => {
+    // in CSS, positions are set in percentages
     playerPaddle.position = (e.y / window.innerHeight) * 100
 })
 
